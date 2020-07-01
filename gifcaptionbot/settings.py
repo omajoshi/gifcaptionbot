@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from . import local_settings
+from .local_settings import *
 
 '''
 local_settings.py should contain the following settings:
@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'trimgif.contrib.TrimGifConfig',
+    'trimgif.apps.TrimGifConfig',
 ]
 
 MIDDLEWARE = [
