@@ -1,0 +1,29 @@
+{% extends 'trimgif/base.html' %}
+{% block content %}
+<form method="get" action="">
+ <input type="text" name="query" value="{{request.GET.query}}">
+ <input type="submit" value="Submit">
+</form>
+
+<table border="1px">
+{% for quote in results %}
+<tr>
+<td>{{forloop.counter}}</td>
+<td>
+{% for line in quote.data %}
+{{ line.content }}<br>
+{% endfor %}
+</td>
+<td>
+<form method="post" action="{% url 'trimgif:create' %}">
+ <input type="text" name="start" value="{{quote.start}}" hidden>
+ <input type="text" name="end" value="{{quote.end}}" hidden>
+ <input type="text" name="movie" value="{{quote.movie}}" hidden>
+ {% csrf_token %}
+ <input type="submit" value="Submit">
+</td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
