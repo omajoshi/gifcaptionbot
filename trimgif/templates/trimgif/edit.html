@@ -1,0 +1,28 @@
+{% extends 'trimgif/base.html' %}
+{% block content %}
+<form method="get" action="{% url 'trimgif:search' %}">
+ <input type="text" name="query">
+ <input type="submit" value="Search">
+</form>
+
+<form method="post" action="{% url 'trimgif:submit' %}">
+{% csrf_token %}
+<input name="movie" value="{{ movie_id }}" hidden />
+<table border="1px" style="width: 100%">
+{% for sub in results %}
+<tr>
+<td><input type="checkbox" name="indices" id="{{ sub.index }}" value="{{ sub.index }}" checked /></td>
+<td><label for="{{ sub.index }}">{{ sub.content }}</label></td>
+<td>
+<label for="{{ sub.index }}_caption">Custom Caption: </label>
+<textarea style="width:100%;" name="{{ sub.index }}_caption">{{ sub.content|safe }}</textarea><br>
+</td>
+</tr>
+{% endfor %}
+</table>
+
+<input type="submit" />
+
+</form>
+
+{% endblock %}

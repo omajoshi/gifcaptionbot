@@ -2,7 +2,7 @@
 {% block content %}
 <form method="get" action="">
  <input type="text" name="query" value="{{request.GET.query}}">
- <input type="submit" value="Submit">
+ <input type="submit" value="Search">
 </form>
 
 <table border="1px">
@@ -15,12 +15,7 @@
 {% endfor %}
 </td>
 <td>
-<form method="post" action="{% url 'trimgif:create' %}">
- <input type="text" name="start" value="{{quote.start}}" hidden>
- <input type="text" name="end" value="{{quote.end}}" hidden>
- <input type="text" name="movie" value="{{quote.movie}}" hidden>
- {% csrf_token %}
- <input type="submit" value="Submit">
+<a href="{% url 'trimgif:edit' %}?start={{quote.start}}&end={{quote.end}}&movie={{quote.movie}}"><button>Select</button></a>
 </td>
 </tr>
 {% endfor %}
