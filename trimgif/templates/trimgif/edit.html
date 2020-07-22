@@ -12,7 +12,7 @@
 {% for sub in results %}
 <tr>
 <td><input type="checkbox" name="indices" id="{{ sub.index }}" value="{{ sub.index }}" checked /></td>
-<td><label for="{{ sub.index }}">{{ sub.content }}</label></td>
+<td><label for="{{ sub.index }}">{{ sub.content|linebreaks }}</label></td>
 <td>
 <label for="{{ sub.index }}_caption">Custom Caption: </label>
 <textarea style="width:100%;" name="{{ sub.index }}_caption">{{ sub.content|safe }}</textarea><br>
@@ -20,6 +20,8 @@
 </tr>
 {% endfor %}
 </table>
+
+<label for="time_after">Seconds to append [0-5]: </label><input min=0 max=5 type="number" name="time_after" id="time_after" />
 
 <input type="submit" />
 
