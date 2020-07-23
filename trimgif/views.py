@@ -66,11 +66,12 @@ def submit(request):
         time_after = int(request.POST.get("time_after", 0))
     except:
         time_after = 0
-    gif = create_gif.delay(movie_id, indices, captions, gif_name, time_after=time_after)
+    show_captions = request.POST.get("captions", True)
+    gif = create_gif.delay(movie_id, indices, captions, gif_name, show_captions, time_after=time_after)
     return HttpResponse(f"<a href='{settings.GIF_URL}/{gif_name}.mp4'>mp4 click here</a> <a href='{settings.GIF_URL}/{gif_name}.gif'>gif click here</a>")
 
 @shared_task
-def create_gif(movie_id, indices, captions, gif_name, time_before=0, time_after=0):
+def create_gif(movie_id, indices, captions, gif_name, show_captions=True, time_before=0, time_after=0):
     if not indices:
         return
     movie_obj = get_object_or_404(Movie, id=movie_id)
@@ -91,11 +92,14 @@ def create_gif(movie_id, indices, captions, gif_name, time_before=0, time_after=
             if sub.index - current_index == 1:
                 clips.append(movie.subclip(str(end_time), str(sub.start)).resize((width,height)))
             clip = movie.subclip(str(sub.start), str(sub.end)).resize((width,height))
-            caption = captions[str(sub.index)]
-            text_height = clip.h/6 if len(caption)>30 or len(caption.split("\n"))>1 else clip.h/10
-            caption_options = {"fontsize": 20, "color": "yellow", "align": "South", "font": "Helvetica-BoldOblique"}
-            clip_sub = TextClip(caption, method='caption', size=(clip.w, clip.h), **caption_options).set_duration(clip.duration).set_position(('center', 'bottom'))
-            clips.append(CompositeVideoClip([clip, clip_sub]))
+            if show_captions:
+                caption = captions[str(sub.index)]
+                text_height = clip.h/6 if len(caption)>30 or len(caption.split("\n"))>1 else clip.h/10
+                caption_options = {"fontsize": 20, "color": "yellow", "align": "South", "font": "Helvetica-BoldOblique"}
+                clip_sub = TextClip(caption, method='caption', size=(clip.w, clip.h), **caption_options).set_duration(clip.duration).set_position(('center', 'bottom'))
+                clips.append(CompositeVideoClip([clip, clip_sub]))
+            else:
+                clips.append(clip)
             start_time, end_time = sub.start, sub.end
             current_index = sub.index
         if time_after > 0 and time_after <= 5:

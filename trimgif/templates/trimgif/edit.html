@@ -7,6 +7,8 @@
 
 <form method="post" action="{% url 'trimgif:submit' %}">
 {% csrf_token %}
+
+
 <input name="movie" value="{{ movie_id }}" hidden />
 <table border="1px" style="width: 100%">
 {% for sub in results %}
@@ -22,6 +24,10 @@
 </table>
 
 <label for="time_after">Seconds to append [0-5]: </label><input min=0 max=5 type="number" name="time_after" id="time_after" />
+<input type="radio" id="cap" name="show_captions" value="cap" required checked>
+<label for="cap">Captions On</label>
+<input type="radio" id="nocap" name="show_captions" value="nocap" required>
+<label for="nocap">Captions Off</label>
 
 <input type="submit" />
 
