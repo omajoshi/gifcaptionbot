@@ -30,8 +30,8 @@ def edit(request):
         return redirect('trimgif:search')
     movie = get_object_or_404(Movie, id=movie_id)
     filepath = movie.srt.path
-    with open(filepath, 'r') as f:
-        subs = list(srt.parse(f.read()))
+    with open(filepath, 'rb') as f:
+        subs = list(srt.parse(f.read().decode("utf-8", "replace")))
         try:
             results = subs[int(start_ind)-1:int(end_ind)]
         except:
@@ -66,7 +66,7 @@ def submit(request):
         time_after = int(request.POST.get("time_after", 0))
     except:
         time_after = 0
-    show_captions = request.POST.get("captions", True)
+    show_captions = request.POST.get("show_captions", "cap") == "cap"
     gif = create_gif.delay(movie_id, indices, captions, gif_name, show_captions, time_after=time_after)
     return HttpResponse(f"<a href='{settings.GIF_URL}/{gif_name}.mp4'>mp4 click here</a> <a href='{settings.GIF_URL}/{gif_name}.gif'>gif click here</a>")
 
@@ -76,8 +76,8 @@ def create_gif(movie_id, indices, captions, gif_name, show_captions=True, time_b
         return
     movie_obj = get_object_or_404(Movie, id=movie_id)
     filepath = movie_obj.srt.path
-    with open(filepath, 'r') as f:
-        subs = list(srt.parse(f.read()))
+    with open(filepath, 'rb') as f:
+        subs = list(srt.parse(f.read().decode("utf-8", "replace")))
         indices.sort()
         results = [subs[int(index)-1] for index in indices]
     clips = []
@@ -115,8 +115,8 @@ def search(request):
     if request.method == "GET" and (query:=request.GET.get("query", None)):
         for movie in Movie.objects.all():
             filepath = movie.srt.path
-            with open(filepath, 'r') as f:
-                subs = list(srt.parse(f.read()))
+            with open(filepath, 'rb') as f:
+                subs = list(srt.parse(f.read().decode("utf-8", "replace")))
                 param = 2
                 delta = 10
                 first_pass = []
