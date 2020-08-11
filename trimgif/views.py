@@ -9,7 +9,7 @@ import os
 import string
 import srt
 
-from celery import shared_task
+# from celery import shared_task
 # from celery.result import AsyncResult
 from datetime import datetime, timedelta
 from moviepy.editor import concatenate_videoclips, VideoFileClip, CompositeVideoClip, TextClip
@@ -67,10 +67,10 @@ def submit(request):
     except:
         time_after = 0
     show_captions = request.POST.get("show_captions", "cap") == "cap"
-    gif = create_gif.delay(movie_id, indices, captions, gif_name, show_captions, time_after=time_after)
+    gif = create_gif(movie_id, indices, captions, gif_name, show_captions, time_after=time_after)
     return HttpResponse(f"<a href='{settings.GIF_URL}/{gif_name}.mp4'>mp4 click here</a> <a href='{settings.GIF_URL}/{gif_name}.gif'>gif click here</a>")
 
-@shared_task
+# @shared_task
 def create_gif(movie_id, indices, captions, gif_name, show_captions=True, time_before=0, time_after=0):
     if not indices:
         return

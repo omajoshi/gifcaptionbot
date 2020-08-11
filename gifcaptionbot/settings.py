@@ -123,7 +123,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
-CELERY_BROKER_URL = 'amqp://localhost'
+# CELERY_BROKER_URL = 'amqp://localhost'
 
 GIF_STORAGE = MEDIA_ROOT + "/gifs"
 GIF_URL = MEDIA_URL + "gifs"
