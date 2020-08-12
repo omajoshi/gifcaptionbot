@@ -1,3 +1,0 @@
-SECRET_KEY = "ABCDEFGHIJKLMNOP"
-DEBUG = False
-ALLOWED_HOSTS = ["gif.omajoshi.com"]
