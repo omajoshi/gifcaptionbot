@@ -141,4 +141,5 @@ DEBUG
 ALLOWED_HOSTS
 '''
 
-from .local_settings import *
+# UNCOMMENT THIS ONCE YOU SET THE LOCAL SETTINGS
+# from .local_settings import *
