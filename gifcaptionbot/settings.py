@@ -134,6 +134,7 @@ SECRET_KEY = "ABCDEFGHIJKLMNOP"
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
+
 '''
 local_settings.py should contain the following settings:
 SECRET_KEY
